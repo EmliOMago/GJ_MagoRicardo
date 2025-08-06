@@ -25,6 +25,9 @@ namespace MagoRicardo
 
         // Posição da saída
         private static int saidaX = 75, saidaY = 30;
+        public static bool jogador1Chegou = false;
+        public static bool jogador2Chegou = false;
+        public static string jogadorVencedor = " ";
 
         // Listas para armazenar obstáculos e inimigos
         private static List<(int x, int y)> obstaculos = new List<(int x, int y)>();
@@ -210,12 +213,13 @@ namespace MagoRicardo
             } while (
                 obstaculos.Contains((x, y)) ||
                 inimigos.Any(i => i.x == x && i.y == y) ||
-                (alvo == 0 && !PosicaoProxima(jogador1X, jogador1Y, x, y, 20)) ||
-                (alvo == 1 && !PosicaoProxima(jogador2X, jogador2Y, x, y, 20))
+                (alvo == 0 && !PosicaoProxima(jogador1X, jogador1Y, x, y, 30)) ||
+                (alvo == 1 && !PosicaoProxima(jogador2X, jogador2Y, x, y, 30))
             );
 
             inimigos.Add((x, y, alvo));
         }
+
 
         private static void ExecutarNivel()
         {
@@ -228,7 +232,7 @@ namespace MagoRicardo
             {
                 // Limpa apenas a área de jogo para evitar rastros
                 Console.SetCursorPosition(9, 11);
-                for (int y = 11; y < 50; y++)
+                for (int y = 11; y < 52; y++)
                 {
                     Console.SetCursorPosition(9, y);
                     Console.Write(new string(' ', 71));
@@ -253,11 +257,20 @@ namespace MagoRicardo
                 AdicionarNovosInimigos();
 
                 // Verifica condições de término
-                nivelConcluido = VerificarChegadaSaida();
+                nivelConcluido = VerificarChegadaSaidaJuntos();
                 if (VerificarColisaoInimigos())
                 {
+                    Console.Beep();
                     RegistrarPontuacao();
                     FinalizarJogo();
+                    return;
+                }
+
+                if (VerificarChegadaSaidaSeparado())
+                {
+                    Console.Beep();
+                    RegistrarPontuacao();
+                    VencerJogo();
                     return;
                 }
 
@@ -280,7 +293,12 @@ namespace MagoRicardo
 
             // Exibe recorde na linha 51
             Console.ForegroundColor = ConsoleColor.White;
-            Console.SetCursorPosition(0, 52);
+            try
+            {
+                Console.SetCursorPosition(0, 52);
+            }
+            catch(Exception e) { Console.WriteLine($"{e}"); }
+            
             Console.Write("Recorde: " + LerRecorde().PadRight(Console.WindowWidth - 9));
         }
 
@@ -322,7 +340,7 @@ namespace MagoRicardo
         private static void DesenharSaida()
         {
             Console.ForegroundColor = ConsoleColor.White;
-            Console.SetCursorPosition(75, 30);
+            Console.SetCursorPosition(75, 30); //28, 32
             Console.Write("S");
         }
 
@@ -381,7 +399,7 @@ namespace MagoRicardo
         private static void MoverInimigos()
         {
             // Move a cada 1 segundo
-            if ((DateTime.Now - ultimoMovInimigos).TotalSeconds < 1)
+            if ((DateTime.Now - ultimoMovInimigos).TotalMilliseconds < (500 - (50 * nivel)))
                 return;
 
             ultimoMovInimigos = DateTime.Now;
@@ -406,15 +424,19 @@ namespace MagoRicardo
                 }
 
                 // Verifica movimento válido
-                if (MovimentoValido(novoX, novoY))
-                {
-                    novosInimigos.Add((novoX, novoY, alvo));
+                if ((x!=32 || x!= 28) && y!=75) {
+
+                    if (MovimentoValido(novoX, novoY))
+                    {
+                        novosInimigos.Add((novoX, novoY, alvo));
+                    }
+                    else
+                    {
+                        // Mantém posição anterior se inválido
+                        novosInimigos.Add((x, y, alvo));
+                    }
                 }
-                else
-                {
-                    // Mantém posição anterior se inválido
-                    novosInimigos.Add((x, y, alvo));
-                }
+                
             }
 
             inimigos = novosInimigos;
@@ -423,7 +445,7 @@ namespace MagoRicardo
         private static void AdicionarNovosInimigos()
         {
             // Adiciona a cada (10 - nível) segundos
-            int intervalo = Math.Max(1, 10 - nivel);
+            int intervalo = Math.Max(1, 8 - (2 * nivel));
             if ((DateTime.Now - ultimoNovoInimigo).TotalSeconds < intervalo)
                 return;
 
@@ -432,14 +454,30 @@ namespace MagoRicardo
             AdicionarInimigo(1);
         }
 
-        private static bool VerificarChegadaSaida()
+        private static bool VerificarChegadaSaidaJuntos()
         {
             // Verifica se ambos chegaram na região da saída
-            bool jogador1Chegou = (jogador1X == 75 && jogador1Y == 30);
+            jogador1Chegou = (jogador1X == 75 && jogador1Y == 30);
 
-            bool jogador2Chegou = (jogador2X == 75 && jogador2Y == 30);
+            jogador2Chegou = (jogador2X == 75 && jogador2Y == 30);
 
-            return jogador1Chegou && jogador2Chegou;
+            return (jogador1Chegou && jogador2Chegou);
+
+
+
+        }
+
+        private static bool VerificarChegadaSaidaSeparado()
+        {
+            // Verifica se ambos chegaram na região da saída
+            jogador1Chegou = (jogador1X == 75 && jogador1Y == 30);
+
+            jogador2Chegou = (jogador2X == 75 && jogador2Y == 30);
+
+            return ((!jogador1Chegou && jogador2Chegou) || (jogador1Chegou && !jogador2Chegou));
+
+
+
         }
 
         private static bool VerificarColisaoInimigos()
@@ -531,6 +569,42 @@ namespace MagoRicardo
             Console.WriteLine($"Jogador atingido: {(jogador1Venceu ? nome2 : nome1)}");
             Console.WriteLine($"Vencedor: {(jogador1Venceu ? nome1 : nome2)}");
             Console.WriteLine($"Pontuação final: {pontuacao1} x {pontuacao2}");
+            Console.WriteLine("\nPressione Enter para voltar ao menu");
+            Console.WriteLine("Pressione Esc para sair");
+
+            // Processa escolha final
+            while (true)
+            {
+                var tecla = Console.ReadKey(true).Key;
+                if (tecla == ConsoleKey.Enter)
+                {
+                    jogoAtivo = false;
+                    return;
+                }
+                if (tecla == ConsoleKey.Escape)
+                {
+                    Environment.Exit(0);
+                }
+            }
+        }
+
+        private static void VencerJogo()
+        {
+            // Pisca personagem atingido
+            for (int i = 0; i < 6; i++)
+            {
+                Console.Clear();
+                DesenharJogadores();
+                System.Threading.Thread.Sleep(250);
+            }
+
+            // Mostra mensagem final
+            Console.Clear();
+            jogadorVencedor = jogador1Chegou ? nome1 : nome2;
+
+            Console.WriteLine("FIM DE JOGO!");
+            Console.WriteLine($"\nVencedor: {jogadorVencedor}");
+            Console.WriteLine($"\nPontuação final: {nome1}:{pontuacao1} x {nome2}:{pontuacao2}");
             Console.WriteLine("\nPressione Enter para voltar ao menu");
             Console.WriteLine("Pressione Esc para sair");
 
