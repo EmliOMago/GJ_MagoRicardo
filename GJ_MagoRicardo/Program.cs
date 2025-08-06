@@ -9,8 +9,8 @@ namespace MagoRicardo
         {
             // Configurações iniciais do console
             Console.Title = "Aquário Game";
-            //Console.SetWindowSize(80, 100);
-            //Console.SetBufferSize(80, 100);
+            Console.SetWindowSize(161, 63);
+            Console.SetBufferSize(161, 63);
             Console.CursorVisible = false;
 
             // Inicia o menu principal
