@@ -632,10 +632,24 @@ namespace MagoRicardo
             while (true)
             {
                 Console.Clear();
-                Console.WriteLine("=== MENU INICIAL ===");
-                Console.WriteLine("1. Jogar (tecla 1)");
-                Console.WriteLine("2. Ver Recordes (tecla 2)");
-                Console.WriteLine("3. Sair (tecla 3 ou Esc)");
+                Console.WriteLine("\n\n\n\n\n\n\n\n\n                                                                                                                                                                              ,--,");
+                Console.WriteLine("                                           ____                       ,--.                                                ,--.                                               ,---.'|");
+                Console.WriteLine("                                         ,'  , `.     ,---,.        ,--.'|                                 ,---,        ,--.'|    ,---,   ,----..      ,---,    ,---,        |###| :");
+                Console.WriteLine("                                      ,-+-,.' _ |   ,'  .' |    ,--,:##: |          ,--,                ,`--.' |    ,--,:##: | ,`--.' |  /###/   |  ,`--.' |   '##.' |       :###: |");
+                Console.WriteLine("                                   ,-+-. ;   ,#|| ,---.'   | ,`--.'`|##' :        ,'_ /|                |###:  : ,`--.'`|##' : |###:  : |###:     : |###:  :  /##;    '.     |###' :");
+                Console.WriteLine("                                  ,--.'|'   |##;| |###|   .' |###:  :##| |   .--. |##| :                :###|  ' |###:  :##| | :###|  ' .###|  ;. / :###|  ' :##:       |    ;###; '");
+                Console.WriteLine("                                 |###|  ,', |##': :###:  |-, :###|   |#| : ,'_ /| :##. |                |###:  | :###|   |#| : |###:  | .###; /--`  |###:  | :##|   /|   |   '###| |__");
+                Console.WriteLine("                                 |###| /##| |##|| :###|  ;/| |###: '  '; | |##' | |##. .                '###'  ; |###: '  '; | '###'  ; ;###| ;     '###'  ; |##:  '#;.   :  |###| :.'|");
+                Console.WriteLine("                                 '###| :##| :##|, |###:   .' '###' ;.    ; |##| ' |##| |                |###|  | '###' ;.    ; |###|  | |###: |     |###|  | |##|  ;/##|   | '###:    ;");
+                Console.WriteLine("                                 ;###. |##; |--'  |###|  |-, |###| |#|   | :##| | :##' ;                '###:  ; |###| | |   | '###:  ; .###| '___  '###:  ; '##:  | |##| ,' |###|  ./");
+                Console.WriteLine("                                 |###: |##| ,     '###:  ;/| '###: |##; .' |##; ' |##| '                |###|  ' '###: |  ; .' |###|  ' '###; : .'| |###|  ' |##|  '  '--'   ;###: ;");
+                Console.WriteLine("                                 |###: '##|/      |###|    | |###| '`--'   :##| : ;##; |                '###:  | |###| '`--'   '###:  | '###| '/  : '###:  | |##:  :         |### ,/");
+                Console.WriteLine("                                 ;###| |`-'       |###:   .' '###: |       '##:  `--'   |               ;###|.'  '###: |       ;###|.'  |###:    /  ;###|.'  |##| ,'         '---'");
+                Console.WriteLine("                                 |###;/           |###| ,'   ;###|.'       :##,      .-./               '---'    ;###|.'       '---'     |##| .'   '---'    `--''");
+                Console.WriteLine("                                 '---'            `----'     '---'          `--`----'                            '---'                    `---`");
+                Console.WriteLine("\n                                                                               Pressione a tecla 1 para Jogar (tecla 1)");
+                Console.WriteLine("                                                                             Pressione a tecla 2 para ver os Recordes (tecla 2)");
+                Console.WriteLine("                                                                     Pressione a tecla 3. para sair do jogo (tecla 3 ou Esc) {Não faça isso!!!");
 
                 var tecla = Console.ReadKey(true).Key;
 
