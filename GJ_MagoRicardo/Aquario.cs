@@ -24,7 +24,7 @@ namespace MagoRicardo
         private static int jogador2X = 14, jogador2Y = 40;
 
         // Posição da saída
-        private static int saidaX = 155, saidaY = 30;
+        private static int saidaX = 75, saidaY = 30;
 
         // Listas para armazenar obstáculos e inimigos
         private static List<(int x, int y)> obstaculos = new List<(int x, int y)>();
@@ -56,7 +56,6 @@ namespace MagoRicardo
             nome1 = Console.ReadLine();
             Console.Write("Nome do segundo jogador: ");
             nome2 = Console.ReadLine();
-            Console.Write("\nPrecione Enter para iniciar");
             Console.ReadKey(true);
             jogoAtivo = true;
             Jogar();
@@ -81,7 +80,7 @@ namespace MagoRicardo
             inimigos.Clear();
 
             // Adiciona bordas fixas (linha 10, linha 50, coluna 8, coluna 80)
-            for (int x = 8; x <= 160; x++)
+            for (int x = 8; x <= 80; x++)
             {
                 obstaculos.Add((x, 10));
                 obstaculos.Add((x, 50));
@@ -89,7 +88,7 @@ namespace MagoRicardo
             for (int y = 10; y <= 50; y++)
             {
                 obstaculos.Add((8, y));
-                obstaculos.Add((160, y));
+                obstaculos.Add((80, y));
             }
 
             // Adiciona obstáculos aleatórios
@@ -101,12 +100,12 @@ namespace MagoRicardo
             do
             {
                 // Remove obstáculos aleatórios anteriores
-                obstaculos.RemoveAll(o => o.y > 10 && o.y < 50 && o.x > 8 && o.x < 160);
+                obstaculos.RemoveAll(o => o.y > 10 && o.y < 50 && o.x > 8 && o.x < 80);
 
                 // Adiciona novos obstáculos aleatórios
                 for (int i = 0; i < numObstaculos; i++)
                 {
-                    int x = rand.Next(9, 160);
+                    int x = rand.Next(9, 80);
                     int y = rand.Next(11, 50);
 
                     // Evita posições próximas aos jogadores e saída
@@ -123,22 +122,22 @@ namespace MagoRicardo
             } while (!caminhoValido);
 
             // Adiciona contorno da saída (com aberturas acima e abaixo)
-            obstaculos.Add((153, 28));
-            obstaculos.Add((154, 28));
-            obstaculos.Add((156, 28));
-            obstaculos.Add((157, 28));
-            obstaculos.Add((153, 29));
-            obstaculos.Add((157, 29));
-            obstaculos.Add((153, 30));
-            obstaculos.Add((157, 30));
-            obstaculos.Add((153, 30));
-            obstaculos.Add((157, 30));
-            obstaculos.Add((153, 31));
-            obstaculos.Add((157, 31));
-            obstaculos.Add((153, 32));
-            obstaculos.Add((154, 32));
-            obstaculos.Add((156, 32));
-            obstaculos.Add((157, 32));
+            obstaculos.Add((73, 28));
+            obstaculos.Add((74, 28));
+            obstaculos.Add((76, 28));
+            obstaculos.Add((77, 28));
+            obstaculos.Add((73, 29));
+            obstaculos.Add((77, 29));
+            obstaculos.Add((73, 30));
+            obstaculos.Add((77, 30));
+            obstaculos.Add((73, 30));
+            obstaculos.Add((77, 30));
+            obstaculos.Add((73, 31));
+            obstaculos.Add((77, 31));
+            obstaculos.Add((73, 32));
+            obstaculos.Add((74, 32));
+            obstaculos.Add((76, 32));
+            obstaculos.Add((77, 32));
 
             // Adiciona inimigos iniciais
             for (int i = 0; i < 3; i++)
@@ -169,7 +168,7 @@ namespace MagoRicardo
                 var atual = fila.Dequeue();
 
                 // Verifica se chegou na saída (considerando as entradas)
-                if ((atual.x == 155 && atual.y == 19) || (atual.x == 155 && atual.y == 21))
+                if ((atual.x == 75 && atual.y == 19) || (atual.x == 75 && atual.y == 21))
                     return true;
 
                 // Explora vizinhos
@@ -180,7 +179,7 @@ namespace MagoRicardo
                     int ny = atual.y + viz.dy;
 
                     // Verifica limites do mapa
-                    if (nx < 9 || nx > 159 || ny < 11 || ny > 49)
+                    if (nx < 9 || nx > 79 || ny < 11 || ny > 49)
                         continue;
 
                     // Verifica se é obstáculo
@@ -232,7 +231,7 @@ namespace MagoRicardo
                 for (int y = 11; y < 50; y++)
                 {
                     Console.SetCursorPosition(9, y);
-                    Console.Write(new string(' ', 151));
+                    Console.Write(new string(' ', 71));
                 }
 
                 // Exibe informações dos jogadores
@@ -276,7 +275,7 @@ namespace MagoRicardo
 
             // Jogador 2 (verde à direita)
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.SetCursorPosition(140, 0);
+            Console.SetCursorPosition(60, 0);
             Console.Write($"{nome2}: {pontuacao2}".PadLeft(20));
 
             // Exibe recorde na linha 51
@@ -323,7 +322,7 @@ namespace MagoRicardo
         private static void DesenharSaida()
         {
             Console.ForegroundColor = ConsoleColor.White;
-            Console.SetCursorPosition(155, 30);
+            Console.SetCursorPosition(75, 30);
             Console.Write("S");
         }
 
@@ -374,7 +373,7 @@ namespace MagoRicardo
         private static bool MovimentoValido(int x, int y)
         {
             // Verifica se está dentro dos limites válidos
-            return x > 8 && x < 160 && y > 10 && y < 50 &&
+            return x > 8 && x < 80 && y > 10 && y < 50 &&
                    !obstaculos.Contains((x, y)) &&
                    !inimigos.Any(i => i.x == x && i.y == y);
         }
@@ -436,9 +435,9 @@ namespace MagoRicardo
         private static bool VerificarChegadaSaida()
         {
             // Verifica se ambos chegaram na região da saída
-            bool jogador1Chegou = (jogador1X == 155 && jogador1Y == 30);
+            bool jogador1Chegou = (jogador1X == 75 && jogador1Y == 30);
 
-            bool jogador2Chegou = (jogador2X == 155 && jogador2Y == 30);
+            bool jogador2Chegou = (jogador2X == 75 && jogador2Y == 30);
 
             return jogador1Chegou && jogador2Chegou;
         }
