@@ -7,7 +7,14 @@ namespace MagoRicardo
 
         static void Main()
         {
-            Aquario.JogarAquario();
+            // Configurações iniciais do console
+            Console.Title = "Aquário Game";
+            //Console.SetWindowSize(80, 100);
+            //Console.SetBufferSize(80, 100);
+            Console.CursorVisible = false;
+
+            // Inicia o menu principal
+            Cardapio.Mostrar();
         }
     }
 }
