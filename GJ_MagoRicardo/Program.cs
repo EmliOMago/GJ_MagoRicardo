@@ -91,7 +91,7 @@ namespace MagoRicardo
                 Console.WriteLine("     Ganha-se um ponto a cada movimentação                          |O   O|");
                 Console.WriteLine("     Ganha-se vinte pontos ao passar de nível                       |O S O|");
                 Console.WriteLine("     Ao tocar em algum # vermelho o jogador perde o jogo.           |O   O|");
-                Console.WriteLine("     Deve-se permanecer os dois personagens dentro da área de saída |OO OO|, sem encostar nas letras 'S' por 5 segundos para passar de nível");
+                Console.WriteLine("     Deve-se permanecer os dois personagens dentro da área de saída |OO OO|, sem encostar na letra 'S' por 5 segundos para passar de nível");
                 Console.WriteLine("     O jogo finaliza assim que um jogador entrar na saída (letra S no centro da área de saída)");
 
                 var tecla = Console.ReadKey(true).Key;
