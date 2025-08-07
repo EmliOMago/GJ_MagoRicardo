@@ -54,6 +54,34 @@ namespace MagoRicardo
             // Limpa o console ao iniciar o módulo
             Console.Clear();
 
+            // Limpa o menu
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+            Console.WriteLine("                                                                                                                                                                                                       ");
+
+
             // Solicita os nomes dos jogadores
             Console.Write("Nome do primeiro jogador: ");
             nome1 = Console.ReadLine();
