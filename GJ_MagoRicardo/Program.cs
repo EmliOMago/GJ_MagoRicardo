@@ -82,9 +82,17 @@ namespace MagoRicardo
                 Console.WriteLine("                                                                    Pressione a tecla 3. para sair do jogo (ou Esc) {Não faça isso!!!}");
 
                 Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("\n\n\n\n\n  ");
-                Console.WriteLine("     Explicação completa do jogo deve ser inserida aqui");
-
+                Console.WriteLine("\n\n\n\n\n\n ");
+                Console.WriteLine("     Utilize as teclas A, S, D e W para mover o personagem do primeiro jogador.");
+                Console.WriteLine("     Utilize as teclas 4, 6, 2 e 8 para mover o personagem do segundo jogador.");
+                Console.WriteLine("     ");
+                Console.WriteLine("                                                                     _____");
+                Console.WriteLine("                                                                    |OO OO|");
+                Console.WriteLine("     Ganha-se um ponto a cada movimentação                          |O   O|");
+                Console.WriteLine("     Ganha-se vinte pontos ao passar de nível                       |O S O|");
+                Console.WriteLine("     Ao tocar em algum # vermelho o jogador perde o jogo.           |O   O|");
+                Console.WriteLine("     Deve-se permanecer os dois personagens dentro da área de saída |OO OO|, sem encostar nas letras 'S' por 5 segundos para passar de nível");
+                Console.WriteLine("     O jogo finaliza assim que um jogador entrar na saída (letra S no centro da área de saída)");
 
                 var tecla = Console.ReadKey(true).Key;
 
