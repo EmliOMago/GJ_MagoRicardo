@@ -15,8 +15,8 @@ namespace MagoRicardo
 
         // Variáveis de estado do jogo
         private static int nivel = 1;
-        private static int pontuacao1 = 0;
-        private static int pontuacao2 = 0;
+        public static int pontuacao1 = 0;
+        public static int pontuacao2 = 0;
         private static bool jogoAtivo = true;
 
         // Posições dos jogadores
@@ -59,6 +59,7 @@ namespace MagoRicardo
             nome1 = Console.ReadLine();
             Console.Write("Nome do segundo jogador: ");
             nome2 = Console.ReadLine();
+            Console.Write("\nPressione Enter para iniciar a primeira fase");
             Console.ReadKey(true);
             jogoAtivo = true;
             Jogar();
@@ -346,54 +347,80 @@ namespace MagoRicardo
 
         private static void ProcessarInput()
         {
-            // Movimento do jogador 1 (WASD)
             if (Console.KeyAvailable)
             {
                 var tecla = Console.ReadKey(true).Key;
-                int novoX = jogador1X, novoY = jogador1Y;
+                int novoX1 = jogador1X, novoY1 = jogador1Y;
+                int novoX2 = jogador2X, novoY2 = jogador2Y;
+
+                // Movimento do jogador 1 (WASD)
+                novoX1 = jogador1X;
+                novoY1 = jogador1Y;
 
                 switch (tecla)
                 {
-                    case ConsoleKey.W: novoY--; break;
-                    case ConsoleKey.S: novoY++; break;
-                    case ConsoleKey.A: novoX--; break;
-                    case ConsoleKey.D: novoX++; break;
+                    case ConsoleKey.W: novoY1--;
+                        pontuacao1++; break;
+                    case ConsoleKey.S: novoY1++;
+                        pontuacao1++; break;
+                    case ConsoleKey.A: novoX1--;
+                        pontuacao1++; break;
+                    case ConsoleKey.D: novoX1++;
+                        pontuacao1++; break;
                 }
 
-                if (MovimentoValido(novoX, novoY))
+                if (MovimentoValido1(novoX1, novoY1))
                 {
-                    jogador1X = novoX;
-                    jogador1Y = novoY;
-                    pontuacao1++;
+                    jogador1X = novoX1;
+                    jogador1Y = novoY1;
                 }
 
                 // Movimento do jogador 2 (Teclado numérico)
-                novoX = jogador2X;
-                novoY = jogador2Y;
+                novoX2 = jogador2X;
+                novoY2 = jogador2Y;
 
                 switch (tecla)
                 {
-                    case ConsoleKey.NumPad8: novoY--; break;
-                    case ConsoleKey.NumPad2: novoY++; break;
-                    case ConsoleKey.NumPad4: novoX--; break;
-                    case ConsoleKey.NumPad6: novoX++; break;
+                    case ConsoleKey.NumPad8: novoY2--; 
+                        pontuacao2++; break;
+                    case ConsoleKey.NumPad2: novoY2++;
+                        pontuacao2++; break;
+                    case ConsoleKey.NumPad4: novoX2--;
+                        pontuacao2++; break;
+                    case ConsoleKey.NumPad6: novoX2++; 
+                        pontuacao2++; break;
                 }
 
-                if (MovimentoValido(novoX, novoY))
+                if (MovimentoValido2(novoX2, novoY2))
                 {
-                    jogador2X = novoX;
-                    jogador2Y = novoY;
-                    pontuacao2++;
+                    jogador2X = novoX2;
+                    jogador2Y = novoY2;
                 }
             }
         }
 
-        private static bool MovimentoValido(int x, int y)
+        private static bool MovimentoValidoNPC(int x, int y)
         {
             // Verifica se está dentro dos limites válidos
             return x > 8 && x < 80 && y > 10 && y < 50 &&
                    !obstaculos.Contains((x, y)) &&
                    !inimigos.Any(i => i.x == x && i.y == y);
+        }
+
+        private static bool MovimentoValido1(int x1, int y1)
+        {
+            // Verifica se está dentro dos limites válidos
+            return x1 > 8 && x1 < 80 && y1 > 10 && y1 < 50 &&
+                   !obstaculos.Contains((x1, y1)) &&
+                   !inimigos.Any(i => i.x == x1 && i.y == y1);
+        }
+
+        private static bool MovimentoValido2(int x2, int y2)
+        {
+            // Verifica se está dentro dos limites válidos
+            return x2 > 8 && x2 < 80 && y2 > 10 && y2 < 50 &&
+                   !obstaculos.Contains((x2, y2)) &&
+                   !inimigos.Any(i => i.x == x2 && i.y == y2);
         }
 
         private static void MoverInimigos()
@@ -426,7 +453,7 @@ namespace MagoRicardo
                 // Verifica movimento válido
                 if ((x!=32 || x!= 28) && y!=75) {
 
-                    if (MovimentoValido(novoX, novoY))
+                    if (MovimentoValidoNPC(novoX, novoY))
                     {
                         novosInimigos.Add((novoX, novoY, alvo));
                     }

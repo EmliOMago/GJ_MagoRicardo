@@ -96,7 +96,7 @@ namespace MagoRicardo
                         break;
                     case ConsoleKey.D2:
                     case ConsoleKey.NumPad2:
-                        MostrarRecordes();
+                        MostrarMaioresRecordes();
                         break;
                     case ConsoleKey.D3:
                     case ConsoleKey.NumPad3:
@@ -111,13 +111,72 @@ namespace MagoRicardo
             }
         }
 
-        public static void MostrarRecordes()
+		public static void MostrarMaioresRecordes()
         {
             Console.Clear();
-            Console.WriteLine("=== RECORDES ===");
-            Console.WriteLine(JogarAquario.LerRecorde());
+            Console.WriteLine("=== TOP 10 RECORDES ===");
+            string recordes = LerMaioresRecordes();
+
+            Console.WriteLine(recordes);
             Console.WriteLine("\nPressione qualquer tecla para voltar...");
             Console.ReadKey(true);
+        }
+
+        public static string LerMaioresRecordes()
+        {
+            try
+            {
+                string caminho = Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments),
+                    "MagoRicardoGameJam2025",
+                    "PontosMR.txt"
+                );
+
+                if (!File.Exists(caminho))
+                    return "Nenhum recorde registrado";
+
+                var linhas = File.ReadAllLines(caminho)
+                                .Where(l => !string.IsNullOrWhiteSpace(l))
+                                .ToArray();
+
+                if (linhas.Length == 0)
+                    return "Sem registros";
+
+                // Ordena decrescentemente pela pontuação
+                var recordesOrdenados = linhas
+                    .Select(linha => new {
+                        Texto = linha,
+                        Pontos = ExtrairPontuacao(linha)
+                    })
+                    .OrderByDescending(x => x.Pontos)
+                    .Take(10)
+                    .Select((x, index) => $"{index + 1}. {x.Texto}") // Numera os recordes
+                    .ToArray();
+
+                return string.Join("\n", recordesOrdenados.Length > 0 ?
+                                      recordesOrdenados :
+                                      new string[] { "Sem registros válidos" });
+            }
+            catch
+            {
+                return "Erro ao ler recordes";
+            }
+        }
+
+        private static int ExtrairPontuacao(string linha)
+        {
+            try
+            {
+                // Formato: "Nome - X pontos em DD/MM/AAAA HH:MM"
+                int inicioPontos = linha.IndexOf("-") + 1;
+                int fimPontos = linha.IndexOf("pontos") - 1;
+                string valorPontos = linha.Substring(inicioPontos, fimPontos - inicioPontos).Trim();
+                return int.Parse(valorPontos);
+            }
+            catch
+            {
+                return 0; // Se não conseguir extrair, considera 0 pontos
+            }
         }
     }
 }
