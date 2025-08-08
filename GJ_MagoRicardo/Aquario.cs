@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MagoRicardo
 {
@@ -158,18 +159,18 @@ namespace MagoRicardo
             obstaculos.Add((74, 28));
             obstaculos.Add((76, 28));
             obstaculos.Add((77, 28));
+            obstaculos.Add((78, 28));
+            obstaculos.Add((79, 28));
             obstaculos.Add((73, 29));
-            obstaculos.Add((77, 29));
             obstaculos.Add((73, 30));
-            obstaculos.Add((77, 30));
             obstaculos.Add((73, 30));
-            obstaculos.Add((77, 30));
             obstaculos.Add((73, 31));
-            obstaculos.Add((77, 31));
             obstaculos.Add((73, 32));
             obstaculos.Add((74, 32));
             obstaculos.Add((76, 32));
             obstaculos.Add((77, 32));
+            obstaculos.Add((78, 32));
+            obstaculos.Add((79, 32));
 
             // Adiciona inimigos iniciais
             for (int i = 0; i < 3; i++)
@@ -250,7 +251,7 @@ namespace MagoRicardo
         }
 
 
-        private static void ExecutarNivel()
+        private static async Task ExecutarNivel()
         {
             // Configurações iniciais do nível
             Console.Clear();
@@ -287,6 +288,7 @@ namespace MagoRicardo
 
                 // Verifica condições de término
                 nivelConcluido = VerificarChegadaSaidaJuntos();
+
                 if (VerificarColisaoInimigos())
                 {
                     Console.Beep();
@@ -302,6 +304,14 @@ namespace MagoRicardo
                     VencerJogo();
                     return;
                 }
+                 /*
+                if (VerificarChegadaSaidaJuntos())
+                {
+                    AvancarNivel();
+                    return;
+                       
+                }
+                 */ 
 
                 // Controla velocidade do loop
                 System.Threading.Thread.Sleep(50);
@@ -369,8 +379,18 @@ namespace MagoRicardo
         private static void DesenharSaida()
         {
             Console.ForegroundColor = ConsoleColor.White;
-            Console.SetCursorPosition(75, 30); //28, 32
+            Console.SetCursorPosition(74, 30); //28, 32
             Console.Write("S");
+
+            Console.SetCursorPosition(78, 29);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("|");
+            Console.SetCursorPosition(78, 30);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("|");
+            Console.SetCursorPosition(78, 31);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("|");
         }
 
         private static void ProcessarInput()
@@ -395,6 +415,9 @@ namespace MagoRicardo
                         pontuacao1++; break;
                     case ConsoleKey.D: novoX1++;
                         pontuacao1++; break;
+                        case ConsoleKey.Escape:
+                        Environment.Exit(0);
+                        break;
                 }
 
                 if (MovimentoValido1(novoX1, novoY1))
@@ -454,7 +477,7 @@ namespace MagoRicardo
         private static void MoverInimigos()
         {
             // Move a cada 1 segundo
-            if ((DateTime.Now - ultimoMovInimigos).TotalMilliseconds < (500 - (50 * nivel)))
+            if ((DateTime.Now - ultimoMovInimigos).TotalMilliseconds < (800 - (50 * nivel)))
                 return;
 
             ultimoMovInimigos = DateTime.Now;
@@ -512,22 +535,28 @@ namespace MagoRicardo
         private static bool VerificarChegadaSaidaJuntos()
         {
             // Verifica se ambos chegaram na região da saída
-            jogador1Chegou = (jogador1X == 75 && jogador1Y == 30);
+            jogador1Chegou = 
+                ((jogador1X == 79 && jogador1Y == 29) ||
+                (jogador1X == 79 && jogador1Y == 30) ||
+                (jogador1X == 79 && jogador1Y == 31));
 
-            jogador2Chegou = (jogador2X == 75 && jogador2Y == 30);
-
+            jogador2Chegou = 
+                ((jogador2X == 79 && jogador2Y == 29) ||
+                (jogador2X == 79 && jogador2Y == 30) ||
+                (jogador2X == 79 && jogador2Y == 31)); 
+            
             return (jogador1Chegou && jogador2Chegou);
-
-
 
         }
 
         private static bool VerificarChegadaSaidaSeparado()
         {
             // Verifica se ambos chegaram na região da saída
-            jogador1Chegou = (jogador1X == 75 && jogador1Y == 30);
+            jogador1Chegou = (jogador1X == 74 && jogador1Y == 30);
 
-            jogador2Chegou = (jogador2X == 75 && jogador2Y == 30);
+            jogador2Chegou = (jogador2X == 74 && jogador2Y == 30);
+
+            jogadorVencedor = jogador1Chegou ? nome1 : nome2;
 
             return ((!jogador1Chegou && jogador2Chegou) || (jogador1Chegou && !jogador2Chegou));
 
@@ -567,11 +596,13 @@ namespace MagoRicardo
         private static void RegistrarPontuacao()
         {
             // Determina vencedor
-            string vencedor = pontuacao1 > pontuacao2 ? nome1 : nome2;
+            jogadorVencedor = pontuacao1 > pontuacao2 ? nome1 : nome2;
             int pontuacaoVencedor = Math.Max(pontuacao1, pontuacao2);
 
             // Cria registro
-            string registro = $"{vencedor} - {pontuacaoVencedor} pontos em {DateTime.Now:dd/MM/yyyy HH:mm}";
+            //string registro = $"{jogadorVencedor} - {pontuacaoVencedor} pontos em {DateTime.Now:dd/MM/yyyy HH:mm}";
+            string registro1 = $"{nome1} - {pontuacao1} pontos em {DateTime.Now:dd/MM/yyyy HH:mm}";
+            string registro2 = $"{nome2} - {pontuacao2} pontos em {DateTime.Now:dd/MM/yyyy HH:mm}";
 
             // Salva em arquivo
             string caminho = Path.Combine(
@@ -581,7 +612,9 @@ namespace MagoRicardo
             );
 
             Directory.CreateDirectory(Path.GetDirectoryName(caminho));
-            File.AppendAllText(caminho, registro + Environment.NewLine);
+            File.AppendAllText(caminho, registro1 + Environment.NewLine);
+            Directory.CreateDirectory(Path.GetDirectoryName(caminho));
+            File.AppendAllText(caminho, registro2 + Environment.NewLine);
         }
 
         public static string LerRecorde()
